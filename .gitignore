@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+
+# Compiled source #
+###################
+*.class
+
+# Intellij configs #
+###################
+*.iml
