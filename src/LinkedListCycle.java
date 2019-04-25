@@ -8,8 +8,10 @@ public class LinkedListCycle {
         head.next = two;
         two.next = head;
         System.out.println(hasCycle(head));
+        System.out.println(hasCycleFast(head));
     }
 
+    // O(n) Space Complexity
     private static boolean hasCycle(ListNode head) {
         Set<ListNode> seenNodes = new HashSet<>();
         while (head != null) {
@@ -19,6 +21,25 @@ public class LinkedListCycle {
                 seenNodes.add(head);
             head = head.next;
         }
+        return false;
+    }
+
+    // O(1) Space Complexity
+    // if the Linked List has a cycle slow and fast will meet at some
+    // point.
+    private static boolean hasCycleFast(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) return true;
+        }
+
         return false;
     }
 }
