@@ -4,6 +4,7 @@
 # Compiled source #
 ###################
 *.class
+LeetCode.kotlin_module
 
 # Intellij configs #
 ###################
