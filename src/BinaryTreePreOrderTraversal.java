@@ -1,32 +1,35 @@
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
-public class BinaryTreeInorderTraversal {
-    public static List<Integer> inorderTraversalRecursive(TreeNode root) {
+public class BinaryTreePreOrderTraversal {
+    public static List<Integer> preorderTraversalRecursive(TreeNode root) {
         List<Integer> result = new ArrayList<>();
-        inorderTraversalRecursive(root, result);
+        preorderTraversalRecursive(root, result);
         return result;
     }
 
-    public static void inorderTraversalRecursive(TreeNode root, List<Integer> result) {
+    public static void preorderTraversalRecursive(TreeNode root, List<Integer> result) {
         if (root == null) {
             return;
         }
-        inorderTraversalRecursive(root.left, result);
         result.add(root.val);
-        inorderTraversalRecursive(root.right, result);
+        preorderTraversalRecursive(root.left, result);
+        preorderTraversalRecursive(root.right, result);
     }
 
-    public static List<Integer> inorderTraversalIterative(TreeNode root) {
+    public static List<Integer> preorderTraversalIterative(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         Deque<TreeNode> stack = new ArrayDeque<>();
         TreeNode p = root;
         while(!stack.isEmpty() || p != null) {
             if(p != null) {
                 stack.push(p);
+                result.add(p.val);  // Add before all left children
                 p = p.left;
             } else {
                 TreeNode node = stack.pop();
-                result.add(node.val);  // Add after all left children
                 p = node.right;
             }
         }
@@ -39,10 +42,10 @@ public class BinaryTreeInorderTraversal {
         TreeNode three = new TreeNode(3);
         one.right = two;
         two.left = three;
-        for (int n:inorderTraversalRecursive(one)) {
+        for (int n:preorderTraversalRecursive(one)) {
             System.out.println(n);
         }
-        for (int n:inorderTraversalIterative(one)) {
+        for (int n:preorderTraversalIterative(one)) {
             System.out.println(n);
         }
     }
