@@ -29,7 +29,9 @@ public class TrappingRainWater {
             return 0;
         }
 
+        // max height from left to right upto the index i
         int[] left_max = new int[size];
+        // max height from right to left upto the index i
         int[] right_max = new int[size];
 
         left_max[0] = height[0];

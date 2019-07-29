@@ -13,14 +13,15 @@ public class BinaryTreeLevelOrderTraversal {
         while (!queue.isEmpty()) {
             int levelNum = queue.size();
             List<Integer> tempList = new ArrayList<>();
-            for (int i = 0; i<levelNum; i++) {
-                if (queue.peek().left != null) {
-                    queue.offer(queue.peek().left);
-                }
-                if (queue.peek().right != null) {
-                    queue.offer(queue.peek().right);
-                }
+            for (int i = 0; i < levelNum; i++) {
+                TreeNode curr = queue.peek();
                 tempList.add(queue.poll().val);
+                if (curr.left != null) {
+                    queue.offer(curr.left);
+                }
+                if (curr.right != null) {
+                    queue.offer(curr.right);
+                }
             }
             list.add(tempList);
         }

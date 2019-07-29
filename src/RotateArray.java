@@ -3,9 +3,7 @@ public class RotateArray {
         // n-k (size of A) , k (size of B)
         // rev (A) and then rev (B)
         int n = nums.length;
-        if (n < k) {
-            return;
-        }
+        k %= n;
         reverse(nums, 0, n - 1);
         reverse(nums, 0, k - 1);
         reverse(nums, k, n - 1);

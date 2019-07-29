@@ -1,55 +1,47 @@
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class FirstMissingPositive {
-    public static int firstMissingPositive(int[] nums) {
-        Set<Integer> set = new HashSet<>();
-        for (int n : nums) {
-            set.add(n);
-        }
-        int min = 1; // first positive number
-        while (set.contains(min)) {
-            min++;
-        }
-        return min;
-    }
-
     // [3,4,-1,1]
     public static int firstMissingPositiveEfficient(int[] nums) {
-        // The basic idea is to traversal and try to move the current value to position whose index is exactly the value
-        // (swap them). Then travelsal again to find the first unusal value, which can not be corresponding to its index.
-        int len = nums.length;
-        int i = 0;
-        while (i < nums.length) {
-            // If the current value is in the range of (0,length) and it's not at its correct position,
-            // swap it to its correct position.
-            // Else just continue;
-            if (nums[i] >= 0 && nums[i] < len && nums[nums[i]] != nums[i])
-                swap(nums, i, nums[i]);
-            else
-                i++;
+        int n = nums.length;
+
+        // 1. mark numbers (num < 0) and (num > n) with a special marker number (n+1)
+        // (we can ignore those because if all number are > n then we'll simply return 1)
+        for (int i = 0; i < n; i++) {
+            if (nums[i] <= 0 || nums[i] > n) {
+                nums[i] = n + 1;
+            }
         }
-        int k = 1;
+        System.out.println(Arrays.toString(nums));
+        // note: all number in the array are now positive, and on the range 1..n+1
 
-        // Check from k=1 to see whether each index and value can be corresponding.
-        while (k < len && nums[k] == k)
-            k++;
+        // 2. mark each cell appearing in the array, by converting the index for that number to negative
+        for (int i = 0; i < n; i++) {
+            int num = Math.abs(nums[i]);
+            if (num > n) {
+                continue;
+            }
+            num--; // -1 for zero index based array (so the number 1 will be at pos 0)
+            if (nums[num] > 0) { // prevents double negative operations
+                nums[num] = -1 * nums[num];
+            }
+        }
+        System.out.println(Arrays.toString(nums));
+        // 3. find the first cell which isn't negative (doesn't appear in the array)
+        for (int i = 0; i < n; i++) {
+            if (nums[i] >= 0) {
+                return i + 1;
+            }
+        }
 
-        // If it breaks because of empty array or reaching the end. K must be the first missing number.
-        if (len == 0 || k < len)
-            return k;
-        else   // If k is hiding at position 0, K+1 is the number.
-            return nums[0] == k ? k + 1 : k;
-    }
-
-    private static void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
+        // 4. no positive numbers were found, which means the array contains all numbers 1..n
+        return n + 1;
     }
 
     public static void main(String[] args) {
-        System.out.println(firstMissingPositive(new int[]{1, 0, 2, 3})); // 4
+        System.out.println(firstMissingPositiveEfficient(new int[]{3, 4, -1, 1})); // 2
         System.out.println(firstMissingPositiveEfficient(new int[]{1, 0, 2, 3}));
     }
 }

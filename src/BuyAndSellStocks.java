@@ -6,21 +6,19 @@ public class BuyAndSellStocks {
     }
 
     private static int maxProfit(int[] prices) {
-        int min = prices[0];
-        int start = 0;
+        // look for valley (lowest point in graph), and keep updating. if at any point,
+        // prices[i] - price[valley] > maxProfit so far, update maxProfit so far.
+        int maxProfit = 0;
+        int minPrice = Integer.MAX_VALUE;
 
-        for (int i=0;i<prices.length;i++) {
-            if (prices[i]<min) {
-                min = prices[i];
-                start = i;
+        for (int price : prices) {
+            if (price < minPrice) {
+                minPrice = price;
+            } else if (price - minPrice > maxProfit) {
+                maxProfit = price - minPrice;
             }
         }
-        int max = prices[start];
-        for (int i=start;i<prices.length;i++) {
-            if (prices[i]>max) {
-                max = prices[i];
-            }
-        }
-        return max - min > 0 ? max - min : 0;
+
+        return maxProfit;
     }
 }
