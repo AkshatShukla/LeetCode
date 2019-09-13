@@ -24,6 +24,45 @@ public class DecodeWays {
         return dp[s.length()];
     }
 
+    public static int numDecodingsRecursive(String s) {
+        // "3" => "c"
+        // "12345" => "a" + decode("2345") or "l" + decode("345")
+        // num_ways("12345") => decode("2345") + decode("345")
+        // "27345" => "b" + decode("7345")
+        // num_ways("27345") => decode("7345")
+        // "011" => 0
+        // base cases=> string empty or string starts with 0
+        int[] memo = new int[s.length() + 1];
+        Arrays.fill(memo, Integer.MAX_VALUE);
+        return helper(s, s.length(), memo);
+    }
+
+    public static int helper(String s, int k, int[] memo) {
+        // see at the last k letters of s
+        if (k == 0) {
+            return 1;
+        }
+        int startIdx = s.length() - k;
+
+        if (s.charAt(startIdx) == '0'){
+            return 0;
+        }
+        if (memo[k] != Integer.MAX_VALUE) {
+            return memo[k];
+        }
+
+        int result = helper(s, k - 1, memo);
+
+        if (k >= 2) {
+            int twoDigitVal = Integer.parseInt(s.substring(startIdx, startIdx + 2));
+            if (twoDigitVal <= 26) {
+                result += helper(s, k - 2, memo);
+            }
+        }
+        memo[k] = result;
+        return result;
+    }
+
     public static void main(String[] args) {
         System.out.println(numDecodings("226"));
     }

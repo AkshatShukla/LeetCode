@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class ConvertSortedArrayToBST {
+public class  ConvertSortedArrayToBST {
     public static TreeNode sortedArrayToBST(int[] nums) {
         return rec(nums, 0, nums.length - 1);
     }

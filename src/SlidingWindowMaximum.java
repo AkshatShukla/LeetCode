@@ -27,37 +27,34 @@ public class SlidingWindowMaximum {
     }
 
     public static int[] maxSlidingWindow(int[] nums, int k) {
-        int[] result = new int[nums.length - k + 1];
-        Deque<Integer> deque = new LinkedList<>();
+        List<Integer> maxValues = new ArrayList<>();
+        // scan the elements 1 at a time and keep filling minHeap
+        Deque<Integer> deque = new LinkedList<>(); // stores indices
 
-        int max_idx = 0;
-        for (int i = 0; i < k; i++) {
-            cleanDeque(deque, i, k, nums);
+        for (int i = 0; i < nums.length; i++) {
+            // remove indexes of elements out of sliding window
+            if (!deque.isEmpty() && deque.peekFirst() == i - k)
+                deque.removeFirst();
+
+            // remove from deq indexes of all elements
+            // which are smaller than current element nums[i]
+            // maintain a descending order of deque(invariant)
+            while (!deque.isEmpty() && nums[i] > nums[deque.peekLast()])
+                deque.removeLast();
+
             deque.addLast(i);
-            // compute max in nums[:k]
-            if (nums[i] > nums[max_idx])
-                max_idx = i;
+
+            if (i >= k - 1) {
+                maxValues.add(nums[deque.peekFirst()]);
+            }
         }
-        result[0] = nums[max_idx];
 
-        // build output
-        for (int i = k; i < nums.length; i++) {
-            cleanDeque(deque, i, k, nums);
-            deque.addLast(i);
-            result[i - k + 1] = nums[deque.peekFirst()];
+        int[] res = new int[maxValues.size()];
+        int idx = 0;
+        for (int i : maxValues) {
+            res[idx++] = i;
         }
-        return result;
-    }
-
-    private static void cleanDeque(Deque<Integer> deque, int i, int k, int[] nums) {
-        // remove indexes of elements not from sliding window
-        if (!deque.isEmpty() && deque.peekFirst() == i - k)
-            deque.removeFirst();
-
-        // remove from deq indexes of all elements
-        // which are smaller than current element nums[i]
-        while (!deque.isEmpty() && nums[i] > nums[deque.peekLast()])
-            deque.removeLast();
+        return res;
     }
 
     public static void main(String[] args) {

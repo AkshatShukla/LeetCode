@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class InvertBinaryTree {
     public static TreeNode invertTree(TreeNode root) {
         if (root == null) {
@@ -7,6 +10,23 @@ public class InvertBinaryTree {
         TreeNode left = invertTree(root.left);
         root.left = right;
         root.right = left;
+        return root;
+    }
+
+    public static TreeNode invertTreeIterative(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        if (root == null) {
+            return null;
+        }
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            TreeNode temp = node.left;
+            node.left = node.right;
+            node.right = temp;
+            if (node.left != null) queue.offer(node.left);
+            if (node.right != null) queue.offer(node.right);
+        }
         return root;
     }
 
@@ -26,5 +46,6 @@ public class InvertBinaryTree {
         seven.right = nine;
 
         System.out.println(invertTree(four));
+        System.out.println(invertTreeIterative(four));
     }
 }

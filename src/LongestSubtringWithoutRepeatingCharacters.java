@@ -1,4 +1,6 @@
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class LongestSubtringWithoutRepeatingCharacters {
@@ -23,10 +25,28 @@ public class LongestSubtringWithoutRepeatingCharacters {
         return longest;
     }
 
+    public static int lengthOfLongestSubstringOptimised(String s) {
+        int left = 0;
+        int right = 0;
+        int longest = Integer.MIN_VALUE;
+        Map<Character, Integer> charIdxMap = new HashMap<>();
+
+        while (right < s.length()) {
+            char currChar = s.charAt(right);
+            if (charIdxMap.containsKey(currChar)) {
+                left = Math.max(left, charIdxMap.get(currChar));
+            }
+            longest = Math.max(longest, right - left + 1);
+            charIdxMap.put(currChar, right + 1);
+            right++;
+        }
+        return longest;
+    }
+
     public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring("abcabcbb"));
-        System.out.println(lengthOfLongestSubstring("bbbbb"));
-        System.out.println(lengthOfLongestSubstring("pwwkew"));
-        System.out.println(lengthOfLongestSubstring("dvdf"));
+        System.out.println(lengthOfLongestSubstringOptimised("abcabcbb")); // 3
+        System.out.println(lengthOfLongestSubstringOptimised("bbbbb")); // 1
+        System.out.println(lengthOfLongestSubstringOptimised("pwwkew")); // 3
+        System.out.println(lengthOfLongestSubstringOptimised("dvdf")); // 3
     }
 }
