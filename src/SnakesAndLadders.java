@@ -61,6 +61,51 @@ public class SnakesAndLadders {
         return -1; // cannot reach destination
     }
 
+    public static int snakesAndLadder1(int[][] board) {
+        if (board == null || board.length == 0)
+            return 0;
+
+        int n = board.length;
+        boolean[] visited = new boolean[n * n + 1];
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(1);
+        int moves = 0;
+
+        int min = n * n;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int curr = queue.poll();
+                if (curr == n * n)
+                    min = Math.min(min, moves);
+
+                // dice 6 possibilities
+                for (int j = 1; j <= 6; j++) {
+                    int num = curr + j;
+                    if (num > n * n)
+                        // invalid
+                        break;
+                    if (!visited[num]) {
+                        visited[num] = true;
+                        int row = n - (num - 1) / n - 1;
+                        int col = (n - row) % 2 == 0 ? n - (num - 1) % n - 1 : (num - 1) % n;
+
+                        if (board[row][col] == -1) {
+                            queue.offer(num);
+                        } else {
+                            queue.offer(board[row][col]);
+                        }
+                    }
+                }
+            }
+            moves++;
+        }
+
+        return min == n * n ? -1 : min;
+    }
+
     public static void main(String[] args) {
         int[][] input = new int[][]{
                 {-1, -1, -1, -1, -1, -1},

@@ -46,9 +46,51 @@ public class MedianOfTwoSortedArrays {
         return -1;
     }
 
+    public static double findMedianSortedArrays2(int[] nums1, int[] nums2) {
+        int[] nums3 = new int[nums1.length + nums2.length];
+
+        int i = 0;
+        int j = 0;
+        int idx = 0;
+        while (i < nums1.length && j < nums2.length) {
+            if (nums1[i] < nums2[j]) {
+                nums3[idx] = nums1[i];
+                i++;
+                idx++;
+            } else {
+                nums3[idx] = nums2[j];
+                j++;
+                idx++;
+            }
+        }
+
+        while (i < nums1.length) {
+            nums3[idx] = nums1[i];
+            i++;
+            idx++;
+        }
+
+        while (j < nums2.length) {
+            nums3[idx] = nums2[j];
+            j++;
+            idx++;
+        }
+
+        int len = nums3.length;
+
+        if (len % 2 != 0) {
+            int mid = len / 2;
+            return nums3[mid];
+        } else {
+            int mid = len / 2;
+            return (nums3[mid] + nums3[mid - 1]) / 2.0;
+        }
+    }
+
     public static void main(String[] args) {
         int[] array1 = new int[]{1, 3};
         int[] array2 = new int[]{2};
         System.out.println(findMedianSortedArrays(array1, array2));
+        System.out.println(findMedianSortedArrays2(array1, array2));
     }
 }

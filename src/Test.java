@@ -53,5 +53,25 @@ public class Test {
         int spaceIdx = s.indexOf(" ");
         String actionType = s.substring(0, spaceIdx - 1);
         System.out.println(actionType);
+        Arrays.sort(com, (o1, o2) -> 0);
+
+        String blob = "bcdefbcbebc";
+        String patt = "bc";
+        int len = patt.length();
+        for (int i = 0; i < blob.length() - len + 1; i++) {
+            int j = i + len - 1;
+            String subStr = blob.substring(i, j + 1);
+            System.out.println(subStr);
+        }
+        List<String> list = new ArrayList<>();
+        list.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                String[] comp1 = o1.split(",");
+                String[] comp2 = o2.split(",");
+                return comp1[1].compareTo(comp2[1]);
+            }
+        });
+
     }
 }

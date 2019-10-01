@@ -40,6 +40,25 @@ public class FirstMissingPositive {
         return n + 1;
     }
 
+    public static int firstMissingPositive(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+
+        if (nums == null || nums.length == 0) {
+            return 1;
+        }
+
+        for (int n : nums)
+            if (n >= 0)
+                set.add(n);
+
+        for (int i = 1; i <= nums.length; i++) {
+            if (!set.contains(i))
+                return i;
+        }
+
+        return nums.length + 1;
+    }
+
     public static void main(String[] args) {
         System.out.println(firstMissingPositiveEfficient(new int[]{3, 4, -1, 1})); // 2
         System.out.println(firstMissingPositiveEfficient(new int[]{1, 0, 2, 3}));
