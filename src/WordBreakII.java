@@ -1,9 +1,27 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class WordBreakII {
     public static List<String> wordBreak(String s, List<String> wordDict) {
+        Set<String> wordSet = new HashSet<>(wordDict);
+
+        // Check if there is at least one possible sentence
+        boolean[] dp1 = new boolean[s.length() + 1];
+        dp1[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp1[j] && wordSet.contains(s.substring(j, i))) {
+                    dp1[i] = true;
+                    break;
+                }
+            }
+        }
+
+        // We are done if there isn't a valid sentence at all
+        if (!dp1[s.length()]) {
+            return new ArrayList<String>();
+        }
+
+        // Build the results with dynamic programming
         LinkedList<String>[] dp = new LinkedList[s.length() + 1];
         LinkedList<String> initial = new LinkedList<>();
         initial.add("");
